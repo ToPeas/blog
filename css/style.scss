@@ -128,12 +128,12 @@ a:hover, a:active {
 .content {
 	height: auto;
 	float: right;
-	width: 60%;
+	width: 75%;
 	margin-top:60px;
 }
 
 .page-top{
-	width: 60%;
+	width: 75%;
 	position: fixed;
 	right: 0;
 	z-index: 3;
@@ -482,6 +482,10 @@ a:hover, a:active {
 	}
 }
 
+// for about 页面
+
+
+
 
 
 
@@ -579,6 +583,8 @@ a:hover, a:active {
 /* about */
 .about{
 	margin: 30px;
+	width: 100%;
+	height: 100%;
 	h3{
 		font-size: 22px;
 	}
@@ -586,6 +592,8 @@ a:hover, a:active {
 /* links*/
 .links{
 	margin: 30px;
+	width: 100%;
+	height: 100%;
 	h3{
 		font-size: 22px;
 	}
