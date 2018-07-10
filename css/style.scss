@@ -128,12 +128,13 @@ a:hover, a:active {
 .content {
 	height: auto;
 	float: right;
-	width: 75%;
+	width: 100%;
 	margin-top:60px;
 }
 
 .page-top{
 	width: 75%;
+	width: 100%;
 	position: fixed;
 	right: 0;
 	z-index: 3;
@@ -331,7 +332,7 @@ a:hover, a:active {
 
 	.post-footer {
 		padding: 0 0 30px 0;
-		border-bottom: 1px solid #f2f2f2;
+		// border-bottom: 1px solid #f2f2f2;
 
 
 		.meta {
