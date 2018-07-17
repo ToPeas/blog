@@ -1,0 +1,79 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="peiqixin,peiqixin@gmail.com"><title>事件循环，面试足够了 · ToPeas-技术博客</title><meta name="description" content="js的引擎和运行时
+我们经常会听到引擎和runtime，它们的区别是什么呢？
+引擎
+解释并编译代码，让它变成能交给机器运行的代码（runnable commands）。
+
+runtime：
+就是运行环境，它提供一些对外接口供js调用，以跟外界打交道，比如，浏览器环境、Node.js环境。不同的run"><meta name="keywords" content="node,vue,front-end,full-stack,"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.jpg" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="https://www.googletagmanager.com/gtag/js?id=UA-119881931-1" async></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date())
+gtag('config', 'UA-119881931-1')
+</script></head><body><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li><li><a href="/links">友链</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img src="/images/favicon.jpg"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>事件循环，面试足够了</a></h3></div><div class="post-content"><h2 id="js的引擎和运行时"><a href="#js的引擎和运行时" class="headerlink" title="js的引擎和运行时"></a>js的引擎和运行时</h2><p><img src="leanote://file/getImage?fileId=5b4d9f1a31780366ea000003" alt=""></p>
+<p>我们经常会听到引擎和runtime，它们的区别是什么呢？</p>
+<h3 id="引擎"><a href="#引擎" class="headerlink" title="引擎"></a>引擎</h3><blockquote>
+<p>解释并编译代码，让它变成能交给机器运行的代码（runnable commands）。</p>
+</blockquote>
+<h3 id="runtime："><a href="#runtime：" class="headerlink" title="runtime："></a>runtime：</h3><blockquote>
+<p>就是运行环境，它提供一些对外接口供js调用，以跟外界打交道，比如，浏览器环境、Node.js环境。不同的runtime，会提供不同的接口，比如，在 Node.js 环境中，我们可以通过 require 来引入模块；而在浏览器中，我们有 window、 DOM。</p>
+</blockquote>
+<p>Js引擎是单线程的，如上图中，它负责维护任务队列，并通过 Event Loop 的机制，按顺序把任务放入栈中执行。而图中的异步处理模块，就是 runtime 提供的，拥有和Js引擎互不干扰的线程。接下来，我们会细说图中的：栈和任务队列。</p>
+<h2 id="浏览器中的事件循环"><a href="#浏览器中的事件循环" class="headerlink" title="浏览器中的事件循环"></a>浏览器中的事件循环</h2><blockquote>
+<p>简单来讲，整体的js代码这个macrotask先执行，同步代码执行完后有microtask执行microtask，没有microtask执行下一个macrotask，如此往复循环至结束</p>
+</blockquote>
+<p>首先明白2个概念</p>
+<h3 id="同步任务"><a href="#同步任务" class="headerlink" title="同步任务"></a>同步任务</h3><blockquote>
+<p>在主线程上排队执行的任务，前一个任务执行完毕，才能执行后一个任务</p>
+</blockquote>
+<h3 id="异步任务"><a href="#异步任务" class="headerlink" title="异步任务"></a>异步任务</h3><blockquote>
+<p>不进入主线程、而进入”任务队列”（task queue）的任务，只有”任务队列”通知主线程，某个异步任务可以执行了，该任务才会进入主线程执行。</p>
+</blockquote>
+<p>因为是js是单线程语言，所谓单线程，是指在js引擎中负责解释和执行js代码的线程只有一个。不妨叫它主线程。但是实际上还存在其他的线程。例如：处理ajax请求的线程、处理DOM事件的线程、定时器线程、读写文件的线程(例如在Node.js中)等等。这些线程可能存在于JS引擎之内，也可能存在于JS引擎之外，在此我们不做区分。不妨叫它们工作线程。我认为原因如果是多线程都对一个同一个dom进行操作，那最后依据哪个线程的执行效果进行显示呢。</p>
+<p>总之：主线程空，就回去读取任务队列里面的任务，这就是js的运行机制。</p>
+<p>任务队列里面的任务是什么？</p>
+<blockquote>
+<p>任务就是注册异步任务时添加的回调函数</p>
+</blockquote>
+<p>可以简单认为这里取的</p>
+<h2 id="浏览器中的任务队列的分类"><a href="#浏览器中的任务队列的分类" class="headerlink" title="浏览器中的任务队列的分类"></a>浏览器中的任务队列的分类</h2><h3 id="microtasks"><a href="#microtasks" class="headerlink" title="microtasks:"></a>microtasks:</h3><ul>
+<li><code>process.nextTick</code></li>
+<li><code>promise</code></li>
+<li><code>Object.observe</code></li>
+<li><code>MutationObserver</code></li>
+</ul>
+<p><code>Object.observe</code>方法用于异步地监视一个对象的修改。当对象属性被修改时，方法的回调函数会提供一个有序的修改流,在<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/observe" target="_blank" rel="noopener">MDN</a>上，这个接口已经被废弃并从各浏览器中移除。你可以使用更通用的 Proxy 对象替代。</p>
+<p><code>MutationObserver</code> 是一个检测页面DOM变化，然后对变化的某些DOM进行一些操作,是用来代替<code>Mutation Events</code>。<code>Mutation Observer</code> 是在<code>DOM4</code>中定义的，用于替代 <code>Mutation Events</code> 的新API，它的不同于events的是，所有监听操作以及相应处理都是在其他脚本执行完成之后异步执行的，并且是所以变动触发之后，将变得记录在数组中，统一进行回调的，也就是说，当你使用observer监听多个DOM变化时，并且这若干个DOM发生了变化，那么observer会将变化记录到变化数组中，等待一起都结束了，然后一次性的从变化数组中执行其对应的回调函数。</p>
+<h3 id="macrotasks"><a href="#macrotasks" class="headerlink" title="macrotasks:"></a>macrotasks:</h3><ul>
+<li><code>setTimeout</code></li>
+<li><code>setInterval</code></li>
+<li><code>setImmediate</code></li>
+<li><code>I/O</code></li>
+<li><code>UI渲染</code></li>
+</ul>
+<h3 id="whatwg规范：https-html-spec-whatwg-org-multipage-webappapis-html-task-queue"><a href="#whatwg规范：https-html-spec-whatwg-org-multipage-webappapis-html-task-queue" class="headerlink" title="whatwg规范：https://html.spec.whatwg.org/multipage/webappapis.html#task-queue"></a>whatwg规范：<a href="https://html.spec.whatwg.org/multipage/webappapis.html#task-queue" target="_blank" rel="noopener">https://html.spec.whatwg.org/multipage/webappapis.html#task-queue</a></h3><ol>
+<li>一个事件循环(event loop)会有一个或多个任务队列(task queue)</li>
+<li>task queue 就是 macrotask queue</li>
+<li>每一个 event loop 都有一个 microtask queue</li>
+<li>task queue == macrotask queue != microtask queue</li>
+<li>一个任务 task 可以放入 macrotask queue 也可以放入 microtask queue 中</li>
+</ol>
+<p>看来标准之后再用自己语言组织一下什么是事件循环</p>
+<blockquote>
+<p>事件循环决定了js的执行顺序，首先执行是整体的代码第一次执行，然后全局上下文进入函数调用栈，直到调用栈清空，只剩下全局，这时候执行所有的mircotasks，当所有的可以执行的mircotasks执行完毕之后，循环再次从macrotasks开始。找到其中macrotasks队列中的一个macroteask队列进行执行，此时本轮循环结束，开始执行UI render。UI render完毕之后接着下一轮循环，然后执行所有的microtask。这样一直循环下去。</p>
+</blockquote>
+<p>用一张图片来表示（消息队列也就是任务队列）</p>
+<p><img src="leanote://file/getImage?fileId=5b4d9ca431780366ea000000" alt=""></p>
+<blockquote>
+<p>需要注意的一点一个script标签里面的js代码也是一个task，确切说是macrotask。</p>
+</blockquote>
+<p>所以这里就有个问题了</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="undefined">  console.log(1)</span></span><br><span class="line"><span class="undefined">  setTimeout(() =&gt; &#123;</span></span><br><span class="line"><span class="undefined">    console.log(4)</span></span><br><span class="line"><span class="undefined">  &#125;, 0);</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="undefined">  setTimeout(() =&gt; &#123;</span></span><br><span class="line"><span class="undefined">    console.log(2)</span></span><br><span class="line"><span class="undefined">  &#125;, 0);</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="undefined">  console.log(3)</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line">// 1 3 4 2</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>一个事件循环有多个任务队列 </p>
+</blockquote>
+<p><img src="leanote://file/getImage?fileId=5b4d9e4131780366ea000002" alt=""></p>
+<p>为什么会这样的设计呢：任务队列是具有优先级的，按照优先级决定访问的先后顺序。而优先级在不同的环境中会有所不同，所以不能给出一个固定的优先级。每访问一个队列，执行栈会执行完这个任务队列的所有的代码，然后再取下一个任务队列需要执行的的代码。如果在执行中遇到了当前属于任务队列的异步任务时。此次任务的返回不会直接排到当前任务队列之后。因为这属于两次不同的事件循环，会被区分开来。</p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li><a href="http://www.cnblogs.com/oxspirt/p/9098616.html" target="_blank" rel="noopener">javascript event loop</a></li>
+<li><a href="https://segmentfault.com/a/1190000011198232" target="_blank" rel="noopener">JavaScript 异步、栈、事件循环、任务队列</a></li>
+</ul>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-calendar"></i><span class="date">创建时间 2018-07-17 04:08</span><i class="fa fa-calendar-o"></i><span class="date">更新时间 2018-07-17 04:08</span><i class="fa fa-tag"></i></div></div></div></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>
