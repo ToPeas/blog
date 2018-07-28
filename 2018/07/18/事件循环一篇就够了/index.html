@@ -8,7 +8,7 @@ runtime：
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date())
 gtag('config', 'UA-119881931-1')
-</script></head><body><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li><li><a href="/links">友链</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img src="/images/favicon.jpg"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>事件循环一篇就够了</a></h3></div><div class="post-content"><h2 id="js的引擎和运行时"><a href="#js的引擎和运行时" class="headerlink" title="js的引擎和运行时"></a>js的引擎和运行时</h2><p><img src="/2018/07/18/事件循环一篇就够了/4.png" alt=""></p>
+</script></head><body><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li><li><a href="/links">友链</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><a href="https://github.com/topeas"><img src="/images/favicon.jpg"></a></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h1><a>事件循环一篇就够了</a></h1></div><div class="post-content"><h2 id="js的引擎和运行时"><a href="#js的引擎和运行时" class="headerlink" title="js的引擎和运行时"></a>js的引擎和运行时</h2><p><img src="/2018/07/18/事件循环一篇就够了/4.png" alt=""></p>
 <p>我们经常会听到引擎和runtime，它们的区别是什么呢？</p>
 <h3 id="引擎"><a href="#引擎" class="headerlink" title="引擎"></a>引擎</h3><blockquote>
 <p>解释并编译代码，让它变成能交给机器运行的代码（runnable commands）。</p>
@@ -18,18 +18,17 @@ gtag('config', 'UA-119881931-1')
 </blockquote>
 <p>Js引擎是单线程的，如上图中，它负责维护任务队列，并通过 Event Loop 的机制，按顺序把任务放入栈中执行。而图中的异步处理模块，就是 runtime 提供的，拥有和Js引擎互不干扰的线程。接下来，我们会细说图中的：栈和任务队列。</p>
 <h2 id="浏览器中的事件循环"><a href="#浏览器中的事件循环" class="headerlink" title="浏览器中的事件循环"></a>浏览器中的事件循环</h2><blockquote>
-<p>简单来讲，整体的js代码这个macrotask先执行，同步代码执行完后有microtask执行microtask，没有microtask执行下一个macrotask，如此往复循环至结束</p>
+<p>简单来讲，整体的js代码这个macrotask先执行，同步代码执行完后有microtask执行microtask，没有microtask执行下一个macrotask，如此往复循环至结束,首先明白2个概念</p>
 </blockquote>
-<p>首先明白2个概念</p>
 <h3 id="同步任务"><a href="#同步任务" class="headerlink" title="同步任务"></a>同步任务</h3><blockquote>
 <p>在主线程上排队执行的任务，前一个任务执行完毕，才能执行后一个任务</p>
 </blockquote>
 <h3 id="异步任务"><a href="#异步任务" class="headerlink" title="异步任务"></a>异步任务</h3><blockquote>
 <p>不进入主线程、而进入”任务队列”（task queue）的任务，只有”任务队列”通知主线程，某个异步任务可以执行了，该任务才会进入主线程执行。</p>
 </blockquote>
-<p>因为是js是单线程语言，所谓单线程，是指在js引擎中负责解释和执行js代码的线程只有一个。不妨叫它主线程。但是实际上还存在其他的线程。例如：处理ajax请求的线程、处理DOM事件的线程、定时器线程、读写文件的线程(例如在Node.js中)等等。这些线程可能存在于JS引擎之内，也可能存在于JS引擎之外，在此我们不做区分。不妨叫它们工作线程。我认为原因如果是多线程都对一个同一个dom进行操作，那最后依据哪个线程的执行效果进行显示呢。</p>
-<p>总之：主线程空，就回去读取任务队列里面的任务，这就是js的运行机制。</p>
-<p>任务队列里面的任务是什么？</p>
+<p>因为是js是单线程语言，所谓单线程，是指在js引擎中负责解释和执行js代码的线程只有一个。不妨叫它主线程。但是实际上还存在其他的线程。例如：处理ajax请求的线程、处理DOM事件的线程、定时器线程、读写文件的线程(例如在Node.js中)等等。这些线程可能存在于JS引擎之内，也可能存在于JS引擎之外，在此我们不做区分。不妨叫它们工作线程。我认为原因如果是多线程都对一个同一个dom进行操作，那最后依据哪个线程的执行效果进行显示呢。
+总之：主线程空，就回去读取任务队列里面的任务，这就是js的运行机制。
+任务队列里面的任务是什么？</p>
 <blockquote>
 <p>任务就是注册异步任务时添加的回调函数</p>
 </blockquote>
@@ -49,7 +48,8 @@ gtag('config', 'UA-119881931-1')
 <li><code>I/O</code></li>
 <li><code>UI渲染</code></li>
 </ul>
-<h3 id="whatwg规范：https-html-spec-whatwg-org-multipage-webappapis-html-task-queue"><a href="#whatwg规范：https-html-spec-whatwg-org-multipage-webappapis-html-task-queue" class="headerlink" title="whatwg规范：https://html.spec.whatwg.org/multipage/webappapis.html#task-queue"></a>whatwg规范：<a href="https://html.spec.whatwg.org/multipage/webappapis.html#task-queue" target="_blank" rel="noopener">https://html.spec.whatwg.org/multipage/webappapis.html#task-queue</a></h3><ol>
+<p>whatwg规范：https://html.spec.whatwg.org/multipage/webappapis.html#task-queue</p>
+<ol>
 <li>一个事件循环(event loop)会有一个或多个任务队列(task queue)</li>
 <li>task queue 就是 macrotask queue</li>
 <li>每一个 event loop 都有一个 microtask queue</li>
@@ -76,4 +76,4 @@ gtag('config', 'UA-119881931-1')
 <li><a href="http://www.cnblogs.com/oxspirt/p/9098616.html" target="_blank" rel="noopener">javascript event loop</a></li>
 <li><a href="https://segmentfault.com/a/1190000011198232" target="_blank" rel="noopener">JavaScript 异步、栈、事件循环、任务队列</a></li>
 </ul>
-</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-calendar"></i><span class="date">创建时间 2018-07-18 11:15</span><i class="fa fa-calendar-o"></i><span class="date">更新时间 2018-07-28 05:41</span><i class="fa fa-tag"></i><a class="tag" href="/tags/事件循环/" title="事件循环">事件循环 </a></div></div></div></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-calendar"></i><span class="date">创建时间 2018-07-18 上午 11:15</span><i class="fa fa-calendar-o"></i><span class="date">更新时间 2018-07-28 晚上 11:50</span><i class="fa fa-tag"></i><a class="tag" href="/tags/事件循环/" title="事件循环">事件循环 </a></div></div></div></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>
