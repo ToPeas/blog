@@ -56,6 +56,9 @@ gtag('config', 'UA-119881931-1')
 <p>退出保存。检测一下nginx的配置是否有语法错误
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nginx -t</span><br></pre></td></tr></table></figure></p>
 <p>重启nginx</p>
+<h3 id="更新证书"><a href="#更新证书" class="headerlink" title="更新证书"></a>更新证书</h3><p>因为这个https证书是有3个月的期限的，差不多快到快要到3个月的时候，<code>letsencrypt</code>会发邮件给你，告诉你的证书快要过期。这个时候你就可以自己重新安排下证书了。
+（你也可以写个定时脚本，但是那个不是本文的关注的地方，而且我也没写）
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">certbot renew</span><br><span class="line">// 上面的指令我跑不成功，就换成下面的这条，等于说是重新的申请下证书，不用改配置，30秒就选择完了</span><br><span class="line">// sudo certbot --force-renew</span><br></pre></td></tr></table></figure></p>
 <p>访问<code>blog.peiqixin.com</code>,就会看见</p>
 <p><img src="https://user-gold-cdn.xitu.io/2018/5/25/1639658fcc69df18?w=284&amp;h=38&amp;f=png&amp;s=11400" alt="">
 再访问<code>peiqixin.com</code></p>
@@ -66,4 +69,4 @@ gtag('config', 'UA-119881931-1')
 1. <a href="https://certbot.eff.org/lets-encrypt/ubuntuxenial-nginx" target="_blank" rel="noopener">certbot官网</a>
 2. <a href="https://blog.codeship.com/how-to-deploy-wildcard-ssl-certificates-using-lets-encrypt/" target="_blank" rel="noopener">how-to-deploy-wildcard-ssl-certificates-using-lets-encrypt</a>
 3. <a href="https://my.oschina.net/mrpei123/blog/1794001" target="_blank" rel="noopener">Nginx 配置多域名 http转https</a></p>
-</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-calendar"></i><span class="date">创建时间 2018-05-25 下午 04:03</span><i class="fa fa-calendar-o"></i><span class="date">更新时间 2018-07-29 凌晨 12:34</span><i class="fa fa-tag"></i><a class="tag" href="/tags/https/" title="https">https </a><a class="tag" href="/tags/ubuntu/" title="ubuntu">ubuntu </a></div></div></div></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-calendar"></i><span class="date">创建时间 2018-05-25 下午 04:03</span><i class="fa fa-calendar-o"></i><span class="date">更新时间 2018-08-08 下午 05:50</span><i class="fa fa-tag"></i><a class="tag" href="/tags/https/" title="https">https </a><a class="tag" href="/tags/ubuntu/" title="ubuntu">ubuntu </a></div></div></div></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>
